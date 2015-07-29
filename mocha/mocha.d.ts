@@ -30,7 +30,7 @@ interface MochaSetupOptions {
     // grep string or regexp to filter tests with
     grep?: any;
 }
-    
+
 interface MochaDone {
     (error?: Error): void;
 }
@@ -130,7 +130,7 @@ declare module Mocha {
     interface ISuite extends NodeJS.EventEmitter {
         parent: ISuite;
         title: string;
-    
+
         fullTitle(): string;
     }
 
@@ -138,7 +138,7 @@ declare module Mocha {
     interface ITest extends IRunnable {
         parent: ISuite;
         pending: boolean;
-        
+
         fullTitle(): string;
     }
 
@@ -151,7 +151,7 @@ declare module Mocha {
         skip(description: string, spec: () => void): void;
         timeout(ms: number): void;
     }
-    
+
     interface ITestDefinition {
         (expectation: string, assertion?: () => void): ITest;
         (expectation: string, assertion?: (done: MochaDone) => void): ITest;
@@ -174,7 +174,7 @@ declare module Mocha {
 
             constructor(runner: IRunner);
         }
-    
+
         export class Doc extends Base {}
         export class Dot extends Base {}
         export class HTML extends Base {}

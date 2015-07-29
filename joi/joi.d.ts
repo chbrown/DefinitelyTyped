@@ -5,7 +5,7 @@
 
 // TODO express type of Schema in a type-parameter (.default, .valid, .example etc)
 
-declare module 'joi' {
+declare module "joi" {
 
 	export interface ValidationOptions {
 		// when true, stops validation on the first error, otherwise returns all the errors found. Defaults to true.
@@ -19,7 +19,7 @@ declare module 'joi' {
 		// when true, unknown keys are deleted (only when value is an object). Defaults to false.
 		stripUnknown?: boolean;
 		// overrides individual error messages. Defaults to no override ({}).
-		language?: Object
+		language?: Object;
 		// provides an external data set to be used in references
 		context?: Object;
 	}

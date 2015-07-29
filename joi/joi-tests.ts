@@ -1,14 +1,14 @@
 /// <reference path="joi.d.ts" />
 /// <reference path="../node/node.d.ts" />
 
-import Joi = require('joi');
+import Joi = require("joi");
 
 // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 var x: any = null;
 var value: any = null;
 var num: number = 0;
-var str: string = '';
+var str: string = "";
 var bool: boolean = false;
 var exp: RegExp = null;
 var obj: Object = null;
@@ -201,7 +201,7 @@ module common_copy_paste {
 	anySchema = anySchema.invalid(x);
 	anySchema = anySchema.invalid(x, x);
 	anySchema = anySchema.invalid([x, x, x]);
-	
+
 	anySchema = anySchema.default(x);
 
 	arrSchema = arrSchema.required();
@@ -241,7 +241,7 @@ module common_copy_paste {
 	boolSchema = boolSchema.invalid(x);
 	boolSchema = boolSchema.invalid(x, x);
 	boolSchema = boolSchema.invalid([x, x, x]);
-	
+
 	boolSchema = boolSchema.default(x);
 
 	boolSchema = boolSchema.required();
@@ -284,7 +284,7 @@ module common {
 	binSchema = binSchema.invalid(x);
 	binSchema = binSchema.invalid(x, x);
 	binSchema = binSchema.invalid([x, x, x]);
-	
+
 	binSchema = binSchema.default(x);
 
 	binSchema = binSchema.required();
@@ -332,7 +332,7 @@ module common {
 	dateSchema = dateSchema.invalid(x);
 	dateSchema = dateSchema.invalid(x, x);
 	dateSchema = dateSchema.invalid([x, x, x]);
-	
+
 	dateSchema = dateSchema.default(x);
 
 	dateSchema = dateSchema.required();
@@ -379,7 +379,7 @@ module common {
 	numSchema = numSchema.invalid(x);
 	numSchema = numSchema.invalid(x, x);
 	numSchema = numSchema.invalid([x, x, x]);
-	
+
 	numSchema = numSchema.default(x);
 
 	numSchema = numSchema.required();
@@ -452,7 +452,7 @@ module common {
 	objSchema = objSchema.invalid(x);
 	objSchema = objSchema.invalid(x, x);
 	objSchema = objSchema.invalid([x, x, x]);
-	
+
 	objSchema = objSchema.default(x);
 
 	objSchema = objSchema.required();
@@ -505,7 +505,7 @@ module common {
 	strSchema = strSchema.invalid(x);
 	strSchema = strSchema.invalid(x, x);
 	strSchema = strSchema.invalid([x, x, x]);
-	
+
 	strSchema = strSchema.default(x);
 
 	strSchema = strSchema.required();
