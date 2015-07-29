@@ -25,7 +25,7 @@ plugin.register.attributes = {
 server.register({}, function (err) {});
 
 // optional options.routes.vhost parameter 
-server.register({}, { select: 'api', routes: { prefix: '/prefix' } }, function (err) {});
+server.register({}, { select: "api", routes: { prefix: "/prefix" } }, function (err) {});
 
 //server.pack.register(plugin, (err: Object) => {
 //	if (err) { throw err; }
@@ -57,7 +57,7 @@ var addArray = function (array: Array<number>, next: (err: any, result?: any, tt
 server.method("sumObj", addArray, {
 	//cache: { expiresIn: 2000 },
 	generateKey: (array: Array<number>) => {
-		return array.join(',');
+		return array.join(",");
 	}
 });
 
@@ -67,27 +67,27 @@ server.methods["sumObj"]([5, 6], (err: any, result: any) => {
 
 // Add the route
 server.route({
-	method: 'GET',
-	path: '/hello',
+	method: "GET",
+	path: "/hello",
 	handler: function (request: Hapi.Request, reply: Function) {
-		reply('hello world');
+		reply("hello world");
 	}
 });
 
 server.route([{
-	method: 'GET',
-	path: '/hello2',
+	method: "GET",
+	path: "/hello2",
 	handler: function (request: Hapi.Request, reply: Function) {
-		reply('hello world2');
+		reply("hello world2");
 	}
 }]);
 
 // config.validate parameters should be optional
 server.route([{
-    method: 'GET',
-    path: '/hello2',
+    method: "GET",
+    path: "/hello2",
     handler: function(request: Hapi.Request, reply: Function) {
-        reply('hello world2');
+        reply("hello world2");
     },
     config: {
         validate: {
