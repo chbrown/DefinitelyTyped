@@ -665,6 +665,6 @@ declare module Promise {
 	}
 }
 
-declare module 'bluebird' {
+declare module "bluebird" {
 	export = Promise;
 }

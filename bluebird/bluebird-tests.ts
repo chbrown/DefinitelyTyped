@@ -187,7 +187,7 @@ fooResolver.reject(err);
 fooResolver.progress(bar);
 
 fooResolver.callback = (err: any, value: Foo) => {
-
+	return;
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -220,7 +220,9 @@ barProm = fooProm.then((value: Foo) => {
 	return bar;
 });
 barProm = barProm.then((value: Bar) => {
-	if (value) return value;
+	if (value) {
+		return value;
+	}
 	var b:Bar;
 	return Promise.resolve(b);
 });
@@ -303,7 +305,7 @@ voidVar = fooProm.done((value: Foo) => {
 }, (reason: any) => {
 	return bar;
 }, (note: any) => {
-
+	return bar;
 });
 voidVar = fooProm.done((value: Foo) => {
 	return bar;
@@ -321,7 +323,7 @@ voidVar = fooProm.done((value: Foo) => {
 }, (reason: any) => {
 	return barThen;
 }, (note: any) => {
-
+	return barThen;
 });
 voidVar = fooProm.done((value: Foo) => {
 	return barThen;
@@ -366,10 +368,10 @@ fooProm = fooProm.timeout(num, str);
 
 fooProm.nodeify();
 fooProm = fooProm.nodeify((err: any) => {
-
+	return;
 });
 fooProm = fooProm.nodeify((err: any, foo?: Foo) => {
-
+	return;
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -379,7 +381,7 @@ barProm = fooProm.fork((value: Foo) => {
 }, (reason: any) => {
 	return bar;
 }, (note: any) => {
-
+	return;
 });
 barProm = fooProm.fork((value: Foo) => {
 	return bar;
@@ -397,7 +399,7 @@ barProm = fooProm.fork((value: Foo) => {
 }, (reason: any) => {
 	return barThen;
 }, (note: any) => {
-
+	return;
 });
 barProm = fooProm.fork((value: Foo) => {
 	return barThen;
@@ -574,7 +576,7 @@ fooProm = Promise.attempt(() => {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 func = Promise.method(function () {
-
+	return;
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -630,7 +632,7 @@ obj = Promise.promisifyAll(obj);
 BlueBird = Promise.noConflict();
 
 Promise.onPossiblyUnhandledRejection((reason: any) => {
-
+	return;
 });
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
