@@ -22,10 +22,14 @@ plugin.register.attributes = {
 };
 
 // optional options parameter
-server.register({}, function (err) {});
+server.register({}, function (err) {
+	throw err;
+});
 
 // optional options.routes.vhost parameter 
-server.register({}, { select: "api", routes: { prefix: "/prefix" } }, function (err) {});
+server.register({}, { select: "api", routes: { prefix: "/prefix" } }, function (err) {
+	throw err;
+});
 
 //server.pack.register(plugin, (err: Object) => {
 //	if (err) { throw err; }
