@@ -30,7 +30,7 @@ declare var require: {
     resolve(): string;
     cache: any;
     extensions: any;
-}
+};
 
 declare var module: {
     exports: any;
@@ -40,7 +40,7 @@ declare var module: {
     loaded: boolean;
     parent: any;
     children: any[];
-}
+};
 
 // Same as module.exports
 declare var exports: any;
@@ -61,7 +61,7 @@ declare var Buffer: {
     isBuffer(obj: any): boolean;
     byteLength(string: string, encoding?: string): number;
     concat(list: Buffer[], totalLength?: number): Buffer;
-}
+};
 
 /************************************************
 *                                               *

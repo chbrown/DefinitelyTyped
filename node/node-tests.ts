@@ -4,14 +4,14 @@ import assert = require("assert");
 import fs = require("fs");
 import events = require("events");
 import zlib = require("zlib");
-import url = require('url');
+import url = require("url");
 import util = require("util");
 import crypto = require("crypto");
 import tls = require("tls");
 import http = require("http");
 import net = require("net");
 import dgram = require("dgram");
-import querystring = require('querystring');
+import querystring = require("querystring");
 import path = require("path");
 
 assert(1 + 1 - 2 === 0, "The universe isn't how it should.");
@@ -45,14 +45,14 @@ fs.writeFile("Harry Potter",
 var content: string,
     buffer: Buffer;
 
-content = fs.readFileSync('testfile', 'utf8');
-content = fs.readFileSync('testfile', {encoding : 'utf8'});
-buffer = fs.readFileSync('testfile');
-buffer = fs.readFileSync('testfile', {flag : 'r'});
-fs.readFile('testfile', 'utf8', (err, data) => content = data);
-fs.readFile('testfile', {encoding : 'utf8'}, (err, data) => content = data);
-fs.readFile('testfile', (err, data) => buffer = data);
-fs.readFile('testfile', {flag : 'r'}, (err, data) => buffer = data);
+content = fs.readFileSync("testfile", "utf8");
+content = fs.readFileSync("testfile", {encoding : "utf8"});
+buffer = fs.readFileSync("testfile");
+buffer = fs.readFileSync("testfile", {flag : "r"});
+fs.readFile("testfile", "utf8", (err, data) => content = data);
+fs.readFile("testfile", {encoding : "utf8"}, (err, data) => content = data);
+fs.readFile("testfile", (err, data) => buffer = data);
+fs.readFile("testfile", {flag : "r"}, (err, data) => buffer = data);
 
 class Networker extends events.EventEmitter {
     constructor() {
@@ -63,7 +63,7 @@ class Networker extends events.EventEmitter {
 }
 
 var errno: number;
-fs.readFile('testfile', (err, data) => {
+fs.readFile("testfile", (err, data) => {
     if (err && err.errno) {
         errno = err.errno;
     }
@@ -75,14 +75,14 @@ fs.readFile('testfile', (err, data) => {
 ///////////////////////////////////////////////////////
 
 function bufferTests() {
-    var utf8Buffer = new Buffer('test');
-    var base64Buffer = new Buffer('','base64');
+    var utf8Buffer = new Buffer("test");
+    var base64Buffer = new Buffer("","base64");
     var octets: Uint8Array = null;
     var octetBuffer = new Buffer(octets);
     console.log(Buffer.isBuffer(octetBuffer));
-    console.log(Buffer.isEncoding('utf8'));
-    console.log(Buffer.byteLength('xyz123'));
-    console.log(Buffer.byteLength('xyz123', 'ascii'));
+    console.log(Buffer.isEncoding("utf8"));
+    console.log(Buffer.byteLength("xyz123"));
+    console.log(Buffer.byteLength("xyz123", "ascii"));
     var result1 = Buffer.concat([utf8Buffer, base64Buffer]);
     var result2 = Buffer.concat([utf8Buffer, base64Buffer], 9999999);
 }
@@ -92,18 +92,18 @@ function bufferTests() {
 /// Url tests : http://nodejs.org/api/url.html
 ////////////////////////////////////////////////////
 
-url.format(url.parse('http://www.example.com/xyz'));
+url.format(url.parse("http://www.example.com/xyz"));
 
-// https://google.com/search?q=you're%20a%20lizard%2C%20gary
+// https://google.com/search?q=you"re%20a%20lizard%2C%20gary
 url.format({
-    protocol: 'https', 
-    host: "google.com", 
-    pathname: 'search', 
+    protocol: "https",
+    host: "google.com",
+    pathname: "search",
     query: { q: "you're a lizard, gary" }
 });
 
-var helloUrl = url.parse('http://example.com/?hello=world', true)
-assert.equal(helloUrl.query.hello, 'world');
+var helloUrl = url.parse("http://example.com/?hello=world", true);
+assert.equal(helloUrl.query.hello, "world");
 
 
 // Old and new util.inspect APIs
@@ -116,9 +116,9 @@ util.inspect(["This is nice"], { colors: true, depth: 5, customInspect: false })
 
 // http://nodejs.org/api/stream.html#stream_readable_pipe_destination_options
 function stream_readable_pipe_test() {
-    var r = fs.createReadStream('file.txt');
+    var r = fs.createReadStream("file.txt");
     var z = zlib.createGzip();
-    var w = fs.createWriteStream('file.txt.gz');
+    var w = fs.createWriteStream("file.txt.gz");
     r.pipe(z).pipe(w);
     r.close();
 }
@@ -127,7 +127,7 @@ function stream_readable_pipe_test() {
 /// Crypto tests : http://nodejs.org/api/crypto.html
 ////////////////////////////////////////////////////
 
-var hmacResult: string = crypto.createHmac('md5', 'hello').update('world').digest('hex');
+var hmacResult: string = crypto.createHmac("md5", "hello").update("world").digest("hex");
 
 function crypto_cipher_decipher_string_test() {
 	var key:Buffer = new Buffer([1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7]);
@@ -179,8 +179,10 @@ var blah = ctx.context;
 http.createServer().listen(0).close().address();
 net.createServer().listen(0).close().address();
 
-var request = http.request('http://0.0.0.0');
-request.once('error', function () {});
+var request = http.request("http://0.0.0.0");
+request.once("error", function () {
+    return;
+});
 request.setNoDelay(true);
 request.abort();
 
@@ -190,17 +192,16 @@ request.abort();
 module http_tests {
     // Status codes
     var code = 100;
-    var codeMessage = http.STATUS_CODES['400'];
     var codeMessage = http.STATUS_CODES[400];
-	
+
 	var agent: http.Agent = new http.Agent({
 		keepAlive: true,
 		keepAliveMsecs: 10000,
 		maxSockets: Infinity,
 		maxFreeSockets: 256
 	});
-	
-	var agent: http.Agent = http.globalAgent;
+
+	agent = http.globalAgent;
 }
 
 ////////////////////////////////////////////////////
@@ -208,21 +209,23 @@ module http_tests {
 ////////////////////////////////////////////////////
 
 var ds: dgram.Socket = dgram.createSocket("udp4", (msg: Buffer, rinfo: dgram.RemoteInfo): void => {
+    return;
 });
 var ai: dgram.AddressInfo = ds.address();
 ds.send(new Buffer("hello"), 0, 5, 5000, "127.0.0.1", (error: Error, bytes: number): void => {
+    return;
 });
 
 ////////////////////////////////////////////////////
 ///Querystring tests : https://gist.github.com/musubu/2202583
 ////////////////////////////////////////////////////
 
-var original: string = 'http://example.com/product/abcde.html';
+var original: string = "http://example.com/product/abcde.html";
 var escaped: string = querystring.escape(original);
 console.log(escaped);
 // http%3A%2F%2Fexample.com%2Fproduct%2Fabcde.html
 var unescaped: string = querystring.unescape(escaped);
-console.log(unescaped); 
+console.log(unescaped);
 // http://example.com/product/abcde.html
 
 ////////////////////////////////////////////////////
@@ -231,20 +234,20 @@ console.log(unescaped);
 
 module path_tests {
 
-    path.normalize('/foo/bar//baz/asdf/quux/..');
+    path.normalize("/foo/bar//baz/asdf/quux/..");
 
-    path.join('/foo', 'bar', 'baz/asdf', 'quux', '..');
+    path.join("/foo", "bar", "baz/asdf", "quux", "..");
     // returns
-    //'/foo/bar/baz/asdf'
+    //"/foo/bar/baz/asdf"
 
     try {
-        path.join('foo', {}, 'bar');
+        path.join("foo", {}, "bar");
     }
     catch(error) {
-
+        throw error;
     }
 
-    path.resolve('foo/bar', '/tmp/file/', '..', 'a/../subfile');
+    path.resolve("foo/bar", "/tmp/file/", "..", "a/../subfile");
     //Is similar to:
     //
     //cd foo/bar
@@ -253,87 +256,87 @@ module path_tests {
     //    cd a/../subfile
     //pwd
 
-    path.resolve('/foo/bar', './baz')
+    path.resolve("/foo/bar", "./baz");
     // returns
-    //    '/foo/bar/baz'
+    //    "/foo/bar/baz"
 
-    path.resolve('/foo/bar', '/tmp/file/')
+    path.resolve("/foo/bar", "/tmp/file/");
     // returns
-    //    '/tmp/file'
+    //    "/tmp/file"
 
-    path.resolve('wwwroot', 'static_files/png/', '../gif/image.gif')
+    path.resolve("wwwroot", "static_files/png/", "../gif/image.gif");
     // if currently in /home/myself/node, it returns
-    //    '/home/myself/node/wwwroot/static_files/gif/image.gif'
+    //    "/home/myself/node/wwwroot/static_files/gif/image.gif"
 
-    path.isAbsolute('/foo/bar') // true
-    path.isAbsolute('/baz/..')  // true
-    path.isAbsolute('qux/')     // false
-    path.isAbsolute('.')        // false
+    path.isAbsolute("/foo/bar"); // true
+    path.isAbsolute("/baz/..");  // true
+    path.isAbsolute("qux/");     // false
+    path.isAbsolute(".");        // false
 
-    path.isAbsolute('//server')  // true
-    path.isAbsolute('C:/foo/..') // true
-    path.isAbsolute('bar\\baz')   // false
-    path.isAbsolute('.')         // false
+    path.isAbsolute("//server");  // true
+    path.isAbsolute("C:/foo/.."); // true
+    path.isAbsolute("bar\\baz");   // false
+    path.isAbsolute(".");         // false
 
-    path.relative('C:\\orandea\\test\\aaa', 'C:\\orandea\\impl\\bbb')
+    path.relative("C:\\orandea\\test\\aaa", "C:\\orandea\\impl\\bbb");
 // returns
-//    '..\\..\\impl\\bbb'
+//    "..\\..\\impl\\bbb"
 
-    path.relative('/data/orandea/test/aaa', '/data/orandea/impl/bbb')
+    path.relative("/data/orandea/test/aaa", "/data/orandea/impl/bbb");
 // returns
-//    '../../impl/bbb'
+//    "../../impl/bbb"
 
-    path.dirname('/foo/bar/baz/asdf/quux')
+    path.dirname("/foo/bar/baz/asdf/quux");
 // returns
-//    '/foo/bar/baz/asdf'
+//    "/foo/bar/baz/asdf"
 
-    path.basename('/foo/bar/baz/asdf/quux.html')
+    path.basename("/foo/bar/baz/asdf/quux.html");
 // returns
-//    'quux.html'
+//    "quux.html"
 
-    path.basename('/foo/bar/baz/asdf/quux.html', '.html')
+    path.basename("/foo/bar/baz/asdf/quux.html", ".html");
 // returns
-//    'quux'
+//    "quux"
 
-    path.extname('index.html')
+    path.extname("index.html");
 // returns
-//    '.html'
+//    ".html"
 
-    path.extname('index.coffee.md')
+    path.extname("index.coffee.md");
 // returns
-//    '.md'
+//    ".md"
 
-    path.extname('index.')
+    path.extname("index.");
 // returns
-//    '.'
+//    "."
 
-    path.extname('index')
+    path.extname("index");
 // returns
-//    ''
+//    ""
 
-    'foo/bar/baz'.split(path.sep)
+    "foo/bar/baz".split(path.sep);
 // returns
-//        ['foo', 'bar', 'baz']
+//        ["foo", "bar", "baz"]
 
-    'foo\\bar\\baz'.split(path.sep)
+    "foo\\bar\\baz".split(path.sep);
 // returns
-//        ['foo', 'bar', 'baz']
+//        ["foo", "bar", "baz"]
 
-    console.log(process.env.PATH)
-// '/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
+    console.log(process.env.PATH);
+// "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin"
 
-    process.env.PATH.split(path.delimiter)
+    process.env.PATH.split(path.delimiter);
 // returns
-//        ['/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local/bin']
+//        ["/usr/bin", "/bin", "/usr/sbin", "/sbin", "/usr/local/bin"]
 
-    console.log(process.env.PATH)
-// 'C:\Windows\system32;C:\Windows;C:\Program Files\nodejs\'
+    console.log(process.env.PATH);
+// "C:\Windows\system32;C:\Windows;C:\Program Files\nodejs\"
 
-    process.env.PATH.split(path.delimiter)
+    process.env.PATH.split(path.delimiter);
 // returns
-//        ['C:\Windows\system32', 'C:\Windows', 'C:\Program Files\nodejs\']
+//        ["C:\Windows\system32", "C:\Windows", "C:\Program Files\nodejs\"]
 
-    path.parse('/home/user/dir/file.txt')
+    path.parse("/home/user/dir/file.txt");
 // returns
 //    {
 //        root : "/",
@@ -343,7 +346,7 @@ module path_tests {
 //        name : "file"
 //    }
 
-    path.parse('C:\\path\\dir\\index.html')
+    path.parse("C:\\path\\dir\\index.html");
 // returns
 //    {
 //        root : "C:\",
@@ -361,5 +364,5 @@ module path_tests {
         name : "file"
     });
 // returns
-//    '/home/user/dir/file.txt'
+//    "/home/user/dir/file.txt"
 }

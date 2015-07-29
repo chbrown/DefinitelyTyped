@@ -4,13 +4,13 @@ import assert = require("assert");
 import fs = require("fs");
 import events = require("events");
 import zlib = require("zlib");
-import url = require('url');
+import url = require("url");
 import util = require("util");
 import crypto = require("crypto");
 import http = require("http");
 import net = require("net");
 import dgram = require("dgram");
-import querystring = require('querystring');
+import querystring = require("querystring");
 
 assert(1 + 1 - 2 === 0, "The universe isn't how it should.");
 
@@ -43,14 +43,14 @@ fs.writeFile("Harry Potter",
 var content: string,
     buffer: Buffer;
 
-content = fs.readFileSync('testfile', 'utf8');
-content = fs.readFileSync('testfile', {encoding : 'utf8'});
-buffer = fs.readFileSync('testfile');
-buffer = fs.readFileSync('testfile', {flag : 'r'});
-fs.readFile('testfile', 'utf8', (err, data) => content = data);
-fs.readFile('testfile', {encoding : 'utf8'}, (err, data) => content = data);
-fs.readFile('testfile', (err, data) => buffer = data);
-fs.readFile('testfile', {flag : 'r'}, (err, data) => buffer = data);
+content = fs.readFileSync("testfile", "utf8");
+content = fs.readFileSync("testfile", {encoding : "utf8"});
+buffer = fs.readFileSync("testfile");
+buffer = fs.readFileSync("testfile", {flag : "r"});
+fs.readFile("testfile", "utf8", (err, data) => content = data);
+fs.readFile("testfile", {encoding : "utf8"}, (err, data) => content = data);
+fs.readFile("testfile", (err, data) => buffer = data);
+fs.readFile("testfile", {flag : "r"}, (err, data) => buffer = data);
 
 class Networker extends events.EventEmitter {
     constructor() {
@@ -61,19 +61,19 @@ class Networker extends events.EventEmitter {
 }
 
 var errno: number;
-fs.readFile('testfile', (err, data) => {
+fs.readFile("testfile", (err, data) => {
     if (err && err.errno) {
         errno = err.errno;
     }
 });
 
-url.format(url.parse('http://www.example.com/xyz'));
+url.format(url.parse("http://www.example.com/xyz"));
 
-// https://google.com/search?q=you're%20a%20lizard%2C%20gary
+// https://google.com/search?q=you"re%20a%20lizard%2C%20gary
 url.format({
-    protocol: 'https', 
-    host: "google.com", 
-    pathname: 'search', 
+    protocol: "https",
+    host: "google.com",
+    pathname: "search",
     query: { q: "you're a lizard, gary" }
 });
 
@@ -87,9 +87,9 @@ util.inspect(["This is nice"], { colors: true, depth: 5, customInspect: false })
 
 // http://nodejs.org/api/stream.html#stream_readable_pipe_destination_options
 function stream_readable_pipe_test() {
-    var r = fs.createReadStream('file.txt');
+    var r = fs.createReadStream("file.txt");
     var z = zlib.createGzip();
-    var w = fs.createWriteStream('file.txt.gz');
+    var w = fs.createWriteStream("file.txt.gz");
     r.pipe(z).pipe(w);
 }
 
@@ -97,7 +97,7 @@ function stream_readable_pipe_test() {
 /// Crypto tests : http://nodejs.org/api/crypto.html
 ////////////////////////////////////////////////////
 
-var hmacResult: string = crypto.createHmac('md5', 'hello').update('world').digest('hex');
+var hmacResult: string = crypto.createHmac("md5", "hello").update("world").digest("hex");
 
 ////////////////////////////////////////////////////
 
@@ -105,8 +105,10 @@ var hmacResult: string = crypto.createHmac('md5', 'hello').update('world').diges
 http.createServer().listen(0).close().address();
 net.createServer().listen(0).close().address();
 
-var request = http.request('http://0.0.0.0');
-request.once('error', function () {});
+var request = http.request("http://0.0.0.0");
+request.once("error", function () {
+    return;
+});
 request.setNoDelay(true);
 request.abort();
 
@@ -116,7 +118,6 @@ request.abort();
 module http_tests {
     // Status codes
     var code = 100;
-    var codeMessage = http.STATUS_CODES['400'];
     var codeMessage = http.STATUS_CODES[400];
 }
 
@@ -125,19 +126,21 @@ module http_tests {
 ////////////////////////////////////////////////////
 
 var ds: dgram.Socket = dgram.createSocket("udp4", (msg: Buffer, rinfo: dgram.RemoteInfo): void => {
+    return;
 });
 var ai: dgram.AddressInfo = ds.address();
 ds.send(new Buffer("hello"), 0, 5, 5000, "127.0.0.1", (error: Error, bytes: number): void => {
+    return;
 });
 
 ////////////////////////////////////////////////////
 ///Querystring tests : https://gist.github.com/musubu/2202583
 ////////////////////////////////////////////////////
 
-var original: string = 'http://example.com/product/abcde.html';
+var original: string = "http://example.com/product/abcde.html";
 var escaped: string = querystring.escape(original);
 console.log(escaped);
 // http%3A%2F%2Fexample.com%2Fproduct%2Fabcde.html
 var unescaped: string = querystring.unescape(escaped);
-console.log(unescaped); 
+console.log(unescaped);
 // http://example.com/product/abcde.html
