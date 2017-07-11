@@ -10,16 +10,25 @@ declare module "react-redux" {
   import { ComponentClass, Component, StatelessComponent, ReactNode } from 'react';
   import { Store, Dispatch, ActionCreator } from 'redux';
 
-  interface ComponentDecorator<TOriginalProps, TOwnProps> {
+  /**
+  ComponentClassDecorator works as a function from a ComponentClass or StatelessComponent,
+  which have the given props: TOriginalProps, to a ComponentClass with the given props: TOwnProps as output.
+
+  TOriginalProps might be able to be inferred from the original class, but
+  */
+  interface ComponentClassDecorator<TOriginalProps, TOwnProps> {
     (component: ComponentClass<TOriginalProps>|StatelessComponent<TOriginalProps>): ComponentClass<TOwnProps>;
   }
+
+  type ComponentDecorator<P, S, ConnectedP> =
+    (component: Component<P, S>) => Component<P & ConnectedP, S>;
 
   /**
    * Decorator that infers the type from the original component
    *
    * Can't use the above decorator because it would default the type to {}
    */
-  export interface InferableComponentDecorator {
+  export interface InferableComponentClassDecorator {
     <P, TComponentConstruct extends (ComponentClass<P>|StatelessComponent<P>)>(component: TComponentConstruct): TComponentConstruct;
   }
 
@@ -42,19 +51,27 @@ declare module "react-redux" {
    * @param mergeProps
    * @param options
    */
-  export function connect(): InferableComponentDecorator;
+  export function connect(): InferableComponentClassDecorator;
+
+  /**
+  TOriginalProps indicates the P of the decorated React.Component<P, S>(Class).
+
+  */
+  export function connect<P, S, ConnectedP>(
+    mapStateToProps: (state: any) => ConnectedP
+  ): ComponentDecorator<P, S, ConnectedP>;
 
   export function connect<TStateProps, TDispatchProps, TOwnProps>(
     mapStateToProps: MapStateToProps<TStateProps, TOwnProps>,
     mapDispatchToProps?: MapDispatchToPropsFunction<TDispatchProps, TOwnProps>|MapDispatchToPropsObject
-  ): ComponentDecorator<TStateProps & TDispatchProps, TOwnProps>;
+  ): ComponentClassDecorator<TStateProps & TDispatchProps, TOwnProps>;
 
   export function connect<TStateProps, TDispatchProps, TOwnProps>(
     mapStateToProps: MapStateToProps<TStateProps, TOwnProps>,
     mapDispatchToProps: MapDispatchToPropsFunction<TDispatchProps, TOwnProps>|MapDispatchToPropsObject,
     mergeProps: MergeProps<TStateProps, TDispatchProps, TOwnProps>,
     options?: Options
-  ): ComponentDecorator<TStateProps & TDispatchProps, TOwnProps>;
+  ): ComponentClassDecorator<TStateProps & TDispatchProps, TOwnProps>;
 
   interface MapStateToProps<TStateProps, TOwnProps> {
     (state: any, ownProps?: TOwnProps): TStateProps;
@@ -82,7 +99,7 @@ declare module "react-redux" {
      */
     pure?: boolean;
     /**
-    * If true, stores a ref to the wrapped component instance and makes it available via 
+    * If true, stores a ref to the wrapped component instance and makes it available via
     * getWrappedInstance() method. Defaults to false.
     */
     withRef?: boolean;
