@@ -748,6 +748,10 @@ declare namespace olx {
              */
             wrapX?: boolean;
         }
+        interface VectorTileOptions extends VectorOptions {
+            tileGrid?: ol.tilegrid.TileGrid;
+            style?: ol.style.Style | ol.FeatureStyleFunction;
+        }
         interface WMTSOptions {
             attributions?: Array<ol.Attribution>;
             crossOrigin?: string;
@@ -776,6 +780,7 @@ declare namespace olx {
 
         interface FillOptions {
             color?: ol.Color | string;
+            opacity?: number;
         }
 
         interface StyleOptions {
@@ -3939,6 +3944,10 @@ declare namespace ol {
              */
             setMap(map: ol.Map): void;
         }
+
+        class VectorTile extends Tile {
+            constructor(options?: olx.layer.TileOptions & olx.layer.VectorOptions);
+        }
     }
 
     namespace loadingstrategy {
@@ -4007,7 +4016,7 @@ declare namespace ol {
          * @param coordinate Coordinate as longitude and latitude, i.e. an array with longitude as 1st and latitude as 2nd element.
          * @param projection Target projection. The default is Web Mercator, i.e. 'EPSG:3857'.
          */
-        function fromLonLat(coordinate: Coordinate, opt_projection: ProjectionLike): Coordinate;
+        function fromLonLat(coordinate: Coordinate, opt_projection?: ProjectionLike): Coordinate;
 
         /**
          * Fetches a Projection object for the code specified.
@@ -4030,7 +4039,7 @@ declare namespace ol {
          * @param projection Projection of the coordinate. The default is Web Mercator, i.e. 'EPSG:3857'.
          * @returns Coordinate as longitude and latitude, i.e. an array with longitude as 1st and latitude as 2nd element.
          */
-        function toLonLat(coordinate: Coordinate, projection: ProjectionLike): Coordinate;
+        function toLonLat(coordinate: Coordinate, projection?: ProjectionLike): Coordinate;
 
         /**
          * Transforms a coordinate from source projection to destination projection. This returns a new coordinate (and does not modify the original).
@@ -4193,6 +4202,10 @@ declare namespace ol {
              * Get all features whose geometry intersects the provided coordinate.
              */
             getFeaturesAtCoordinate(coordinate: ol.Coordinate): ol.Feature[];
+        }
+
+        class VectorTile extends Vector {
+            constructor(opts?: olx.source.VectorTileOptions)
         }
 
         class VectorEvent {
